@@ -2,5 +2,5 @@ package root
 
 import "embed"
 
-//go:embed all:dist
+//go:embed all:client/dist
 var DistFileSystem embed.FS

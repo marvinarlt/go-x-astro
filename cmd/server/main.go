@@ -53,7 +53,7 @@ func main() {
 	router := chi.NewRouter()
 	client := astro.New(&root.DistFileSystem)
 
-	if err := client.LoadTemplates("dist"); err != nil {
+	if err := client.LoadTemplates("."); err != nil {
 		log.Fatalf("could not load templates: %v\n", err)
 	}
 
@@ -70,7 +70,7 @@ func main() {
 
 func createTemplateParsingHandler(router *chi.Mux) astro.ParseHandlerFunc {
 	return func(t *astro.Template, tmpl *template.Template) error {
-		pattern := strings.TrimPrefix(t.Path, "dist")
+		pattern := strings.TrimPrefix(t.Path, "client/dist")
 		pattern = strings.TrimSuffix(pattern, ".html")
 		pattern = strings.TrimSuffix(pattern, "index")
 
