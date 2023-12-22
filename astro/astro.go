@@ -19,6 +19,7 @@ type Template struct {
 	Name      string
 	Extension string
 	BaseName  string
+	Pattern   string
 	Content   []byte
 }
 
@@ -49,12 +50,19 @@ func (astro *Astro) LoadTemplates(directory string) error {
 
 		baseName := filepath.Base(path)
 		extension := filepath.Ext(path)
+		pattern := strings.TrimPrefix(path, "dist")
+		pattern = strings.TrimSuffix(pattern, "/index.html")
+
+		if len(pattern) == 0 {
+			pattern = "/"
+		}
 
 		astro.Templates = append(astro.Templates, &Template{
 			Path:      path,
 			Name:      strings.TrimSuffix(baseName, extension),
 			Extension: strings.TrimPrefix(extension, "."),
 			BaseName:  baseName,
+			Pattern:   pattern,
 			Content:   content,
 		})
 

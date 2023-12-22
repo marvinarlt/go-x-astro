@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 	"text/template"
 
 	"github.com/go-chi/chi/v5"
@@ -70,13 +69,8 @@ func main() {
 
 func createTemplateParsingHandler(router *chi.Mux) astro.ParseHandlerFunc {
 	return func(t *astro.Template, tmpl *template.Template) error {
-		pattern := strings.TrimPrefix(t.Path, "client/dist")
-		pattern = strings.TrimSuffix(pattern, ".html")
-		pattern = strings.TrimSuffix(pattern, "index")
-
-		log.Printf("adding route: GET %s\n", pattern)
-
-		router.Get(pattern, createTemplateRequestHandler(tmpl))
+		log.Printf("adding route: GET %s\n", t.Pattern)
+		router.Get(t.Pattern, createTemplateRequestHandler(tmpl))
 
 		return nil
 	}
