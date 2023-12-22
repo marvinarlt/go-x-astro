@@ -43,3 +43,9 @@ Or without Makefile:
 ```sh
 npm run build && go build -o bin/server cmd/server/main.go
 ```
+
+## ToDo:
+
+- Only parse html files
+- Serve static assets separately
+- Make the astro package configurable
