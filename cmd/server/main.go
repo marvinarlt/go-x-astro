@@ -14,6 +14,7 @@ import (
 
 type Data struct {
 	Person Person
+	People []Person
 }
 
 type Person struct {
@@ -78,7 +79,9 @@ func createTemplateParsingHandler(router *chi.Mux) astro.ParseHandlerFunc {
 
 func createTemplateRequestHandler(tmpl *template.Template) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var data Data
+		data := Data{
+			People: people,
+		}
 
 		idParam := chi.URLParam(r, "id")
 

@@ -3,11 +3,21 @@ import Layout from '@layouts/Layout.astro';
 
 type GoTemplateActions = Record<string, string | ((iterable: string) => string)>;
 
+const range = {
+  start: (iterable: string) => `{{range ${iterable.substring(2, iterable.length - 2)}}}`,
+  end: '{{end}}',
+} satisfies GoTemplateActions;
+
+const data = {
+  people: '{{.People}}'
+} satisfies GoTemplateActions;
+
 const person = {
-	firstName: '{{.Person.FirstName}}',
-	lastName: '{{.Person.LastName}}',
-	age: '{{.Person.Age}}',
-	email: '{{.Person.Email}}',
+  id: '{{.Id}}',
+	firstName: '{{.FirstName}}',
+	lastName: '{{.LastName}}',
+	age: '{{.Age}}',
+	email: '{{.Email}}',
 } satisfies GoTemplateActions;
 ---
 
@@ -41,21 +51,18 @@ const person = {
 				</linearGradient>
 			</defs>
 		</svg>
-		<h1>Welcome to <span class="text-gradient">Astro</span> {person.firstName}</h1>
+		<h1>Welcome to <span class="text-gradient">Astro</span></h1>
 		<p class="instructions">
 			To get started, open the directory <code>src/pages</code> in your project.<br />
 			<strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
 		</p>
-		<dl>
-			<dt>Firstname:</dt>
-			<dd>{person.firstName}</dd>
-			<dt>Lastname:</dt>
-			<dd>{person.lastName}</dd>
-			<dt>Age:</dt>
-			<dd>{person.age}</dd>
-			<dt>Email:</dt>
-			<dd>{person.email}</dd>
-		</dl>
+		<ul>
+      {range.start(data.people)}
+      <li>
+        <a href={`/user/${person.id}`}>{person.firstName} {person.lastName}</a>
+      </li>
+      {range.end}
+    </ul>
 	</main>
 </Layout>
 
