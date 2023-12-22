@@ -1,0 +1,10 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["client/components/*"],
+      "@layouts/*": ["client/layouts/*"]
+    }
+  }
+}
