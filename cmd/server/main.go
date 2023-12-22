@@ -56,7 +56,7 @@ func main() {
 		log.Fatalf("could not load templates: %v\n", err)
 	}
 
-	if err := client.ParseTemplates(createTemplateParsingHandler(router)); err != nil {
+	if err := client.ParseFiles(createTemplateParsingHandler(router)); err != nil {
 		log.Fatalf("could not parse template: %v\n", err)
 	}
 
@@ -68,9 +68,9 @@ func main() {
 }
 
 func createTemplateParsingHandler(router *chi.Mux) astro.ParseHandlerFunc {
-	return func(t *astro.Template, tmpl *template.Template) error {
-		log.Printf("adding route: GET %s\n", t.Pattern)
-		router.Get(t.Pattern, createTemplateRequestHandler(tmpl))
+	return func(file *astro.File, tmpl *template.Template) error {
+		log.Printf("adding route: GET %s\n", file.Pattern)
+		router.Get(file.Pattern, createTemplateRequestHandler(tmpl))
 
 		return nil
 	}

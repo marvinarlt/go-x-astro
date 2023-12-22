@@ -11,10 +11,10 @@ import (
 
 type Astro struct {
 	FileSystem *embed.FS
-	Templates  []*Template
+	Files      []*File
 }
 
-type Template struct {
+type File struct {
 	Path      string
 	Name      string
 	Extension string
@@ -23,7 +23,7 @@ type Template struct {
 	Content   []byte
 }
 
-type ParseHandlerFunc = func(t *Template, tmpl *template.Template) error
+type ParseHandlerFunc = func(file *File, tmpl *template.Template) error
 
 func New(fs *embed.FS) *Astro {
 	return &Astro{
@@ -57,7 +57,7 @@ func (astro *Astro) LoadTemplates(directory string) error {
 			pattern = "/"
 		}
 
-		astro.Templates = append(astro.Templates, &Template{
+		astro.Files = append(astro.Files, &File{
 			Path:      path,
 			Name:      strings.TrimSuffix(baseName, extension),
 			Extension: strings.TrimPrefix(extension, "."),
@@ -70,15 +70,15 @@ func (astro *Astro) LoadTemplates(directory string) error {
 	})
 }
 
-func (astro *Astro) ParseTemplates(handler ParseHandlerFunc) error {
-	for _, t := range astro.Templates {
-		tmpl, err := template.New(t.Name).Parse(string(t.Content))
+func (astro *Astro) ParseFiles(handler ParseHandlerFunc) error {
+	for _, file := range astro.Files {
+		tmpl, err := template.New(file.Name).Parse(string(file.Content))
 
 		if err != nil {
 			return err
 		}
 
-		if err := handler(t, tmpl); err != nil {
+		if err := handler(file, tmpl); err != nil {
 			return err
 		}
 	}
